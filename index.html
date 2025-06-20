@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Thống Kê Rạp Chiếu Phim</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-film"></i> Dashboard Rạp Chiếu Phim</h1>
+                <div class="date-filter">
+                    <label for="dateRange">Lọc theo thời gian:</label>
+                    <select id="dateRange">
+                        <option value="all">Tất cả</option>
+                        <option value="today">Hôm nay</option>
+                        <option value="week">Tuần này</option>
+                        <option value="month">Tháng này</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Stats Cards -->
+            <section class="stats-grid">
+                <div class="stat-card revenue">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Tổng Doanh Thu</h3>
+                        <p class="stat-value" id="totalRevenue">0 VNĐ</p>
+                        <span class="stat-change positive" id="revenueChange">+0%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card tickets">
+                    <div class="stat-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Tổng Vé Bán</h3>
+                        <p class="stat-value" id="totalTickets">0</p>
+                        <span class="stat-change positive" id="ticketsChange">+0%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card movies">
+                    <div class="stat-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Tổng Phim</h3>
+                        <p class="stat-value" id="totalMovies">0</p>
+                        <span class="stat-change neutral" id="moviesChange">0%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card customers">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Khách Hàng</h3>
+                        <p class="stat-value" id="totalCustomers">0</p>
+                        <span class="stat-change positive" id="customersChange">+0%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-line"></i> Doanh Thu Theo Thời Gian</h3>
+                    </div>
+                    <div class="chart-content">
+                        <div class="simple-chart" id="revenueChart">
+                            <div class="loading-chart">Đang tải dữ liệu...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-pie"></i> Phim Phổ Biến</h3>
+                    </div>
+                    <div class="chart-content">
+                        <div class="movie-stats" id="moviesChart">
+                            <div class="loading-chart">Đang tải dữ liệu...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tables Section -->
+            <section class="tables-section">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3><i class="fas fa-trophy"></i> Top Phim Bán Chạy</h3>
+                    </div>
+                    <div class="table-content">
+                        <table id="topMoviesTable">
+                            <thead>
+                                <tr>
+                                    <th>Hạng</th>
+                                    <th>Tên Phim</th>
+                                    <th>Thể Loại</th>
+                                    <th>Số Vé</th>
+                                    <th>Doanh Thu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
+                                        Đang tải dữ liệu...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3><i class="fas fa-building"></i> Thống Kê Theo Rạp</h3>
+                    </div>
+                    <div class="table-content">
+                        <table id="cinemaStatsTable">
+                            <thead>
+                                <tr>
+                                    <th>Tên Rạp</th>
+                                    <th>Địa Chỉ</th>
+                                    <th>Số Vé</th>
+                                    <th>Doanh Thu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 20px; color: #666;">
+                                        Đang tải dữ liệu...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Transactions -->
+            <section class="recent-section">
+                <div class="recent-container">
+                    <div class="recent-header">
+                        <h3><i class="fas fa-clock"></i> Giao Dịch Gần Đây</h3>
+                    </div>
+                    <div class="recent-content" id="recentTransactions">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            Đang tải dữ liệu...
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
