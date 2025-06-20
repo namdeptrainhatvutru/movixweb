@@ -1,0 +1,191 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #1e1b38, #2a1f4c);
+  margin: 0;
+  padding: 20px;
+  color: #f0f0f0;
+}
+
+h1, h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Form nhập phim */
+form#filmForm {
+  background: #2b2248;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  display: grid;
+  gap: 12px;
+  max-width: 600px;
+  margin-bottom: 40px;
+  color: white;
+}
+
+form input {
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #3a2c5e;
+  color: white;
+}
+
+form input::placeholder {
+  color: #aaa;
+}
+
+form button {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+form button:hover {
+  background-color: #4e47d6;
+}
+
+/* Danh sách phim */
+#filmList {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Card phim */
+.film-card {
+  background: #2b2248;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.film-card:hover {
+  transform: translateY(-5px);
+}
+
+.film-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.film-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 18px;
+  color: #6c63ff;
+}
+
+.film-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #ccc;
+}
+
+/* Nút trong card */
+.film-card button {
+  margin-top: 10px;
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.film-card .edit-btn {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.film-card .edit-btn:hover {
+  background-color: #d99000;
+}
+
+.film-card .delete-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.film-card .delete-btn:hover {
+  background-color: #c9302c;
+}
+
+/* Background Elements */
+.bg-elements {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  opacity: 0.1;
+  animation: float 6s ease-in-out infinite;
+}
+
+.bg-circle-1 {
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  right: -150px;
+  animation-delay: 0s;
+}
+
+.bg-circle-2 {
+  width: 200px;
+  height: 200px;
+  bottom: -100px;
+  left: -100px;
+  animation-delay: 2s;
+}
+
+.bg-circle-3 {
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 4s;
+}
+
+.bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+}
+
+.stat-card {
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-normal);
+  cursor: pointer;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý phim</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <h1>Quản lý phim</h1>
+
+  <form id="filmForm">
+    <input type="hidden" id="phim_id">
+    <input type="text" id="ten_phim" placeholder="Tên phim" required>
+    <input type="text" id="dao_dien" placeholder="Đạo diễn" required>
+    <input type="text" id="ngon_ngu" placeholder="Ngôn ngữ" required>
+    <input type="number" id="do_tuoi" placeholder="Độ tuổi" required>
+    <input type="text" id="mo_ta" placeholder="Mô tả" required>
+    <input type="number" id="thoi_luong" placeholder="Thời lượng (phút)" required>
+
+    <!-- Ô nhập URL ảnh (tự động được điền sau khi upload) -->
+    <input style="display: none;"  type="text" id="poster_url" placeholder="Poster URL" required readonly>
+
+    <!-- Upload ảnh từ thiết bị -->
+    <input type="file" id="poster_file" accept="image/*" />
+    <img id="preview" width="200px" style="margin-bottom: 10px; border-radius: 8px;" />
+
+    <input type="text" id="trailer_url" placeholder="Trailer URL" required>
+    <input type="text" id="the_loai" placeholder="Thể loại" required>
+    <button type="submit">Lưu</button>
+  </form>
+
+  <h2>Danh sách phim</h2>
+  <div id="filmList"></div>
+
+  <!-- Script Upload ảnh -->
+  <script>
+    const imageInput = document.getElementById('poster_file');
+    const preview = document.getElementById('preview');
+    const posterUrl = document.getElementById('poster_url');
+
+    const IMGBB_API_KEY = 'd698d3c569cf045e45516a8fc568c999'; // Thay nếu cần
+
+    imageInput.addEventListener('change', async () => {
+      const file = imageInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Image = reader.result.split(',')[1];
+        const formData = new FormData();
+        formData.append('key', IMGBB_API_KEY);
+        formData.append('image', base64Image);
+
+        try {
+          const res = await fetch('https://api.imgbb.com/1/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          if (data.success) {
+            const link = data.data.display_url || data.data.url;
+            posterUrl.value = link;
+            preview.src = link;
+            alert("Tải ảnh thành công!");
+          } else {
+            alert("Upload thất bại.");
+            console.log(data);
+          }
+        } catch (err) {
+          alert("Lỗi mạng hoặc không thể upload ảnh.");
+          console.error(err);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+
+  <!-- Script chính xử lý CRUD -->
+  <script src="script.js"></script>
+</body>
+</html>
