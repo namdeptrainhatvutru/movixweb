@@ -3,16 +3,33 @@ const API_URL = "https://67b5f43207ba6e59083f3354.mockapi.io/Phim";
 const filmForm = document.getElementById("filmForm");
 const filmList = document.getElementById("filmList");
 
-// Lấy danh sách phim
+let allFilms = []; // Lưu tất cả phim để tìm kiếm
+
 async function fetchFilms() {
   const res = await fetch(API_URL);
   const data = await res.json();
-  renderFilms(data);
+  allFilms = data;
+  renderFilms(allFilms);
 }
 
+// Xử lý tìm kiếm
+document.getElementById("searchInput").addEventListener("input", function() {
+  const keyword = this.value.trim().toLowerCase();
+  const filtered = allFilms.filter(film =>
+    film.ten_phim.toLowerCase().includes(keyword)
+    // Có thể thêm các trường khác nếu muốn tìm theo nhiều tiêu chí
+    // || film.dao_dien.toLowerCase().includes(keyword)
+    // || film.the_loai.toLowerCase().includes(keyword)
+  );
+  renderFilms(filtered);
+});
 // Hiển thị danh sách phim
 function renderFilms(films) {
   filmList.innerHTML = "";
+  if (films.length === 0) {
+    filmList.innerHTML = "<p>Không có phim nào phù hợp.</p>";
+    return;
+  }
   films.forEach(film => {
     const card = document.createElement("div");
     card.className = "film-card";

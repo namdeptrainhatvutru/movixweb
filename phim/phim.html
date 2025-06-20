@@ -10,7 +10,8 @@
 
 <body>
   <h1>Quản lý phim</h1>
-
+    <div style="display: flex;">
+      <div style="width: 50%;">
   <form id="filmForm">
     <input type="hidden" id="phim_id">
     <input type="text" id="ten_phim" placeholder="Tên phim" required>
@@ -30,8 +31,12 @@
     <input type="text" id="trailer_url" placeholder="Trailer URL" required>
     <input type="text" id="the_loai" placeholder="Thể loại" required>
     <button type="submit">Lưu</button>
-  </form>
-
+  </form></div>
+  <div>
+    
+  </div>
+</div>
+    <input type="text" id="searchInput" placeholder="tìm kiếm">
   <h2>Danh sách phim</h2>
   <div id="filmList"></div>
 
