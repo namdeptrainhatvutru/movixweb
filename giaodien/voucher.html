@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voucher CRUD</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+      padding: 30px;
+    }
+    h2, h3 {
+      color: #333;
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .form-container button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-container button:hover {
+      background-color: #0056b3;
+    }
+
+    #voucherList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .voucher {
+      background: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      width: 300px;
+    }
+
+    .voucher .info {
+      margin-bottom: 10px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .actions button {
+      flex: 1;
+      padding: 8px;
+      margin-right: 5px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .actions button:nth-child(1) {
+      background-color: #28a745;
+    }
+
+    .actions button:nth-child(2) {
+      background-color: #dc3545;
+    }
+
+    .actions button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h3>Thêm hoặc Sửa Voucher</h3>
+    <input type="text" id="ma_voucher" placeholder="Mã voucher">
+    <input type="number" id="giam_gia" placeholder="Giảm giá (%)">
+    <input type="text" id="thoi_gian_het_han" placeholder="Thời gian hết hạn (dd/MM/yyyy)">
+    <input type="hidden" id="voucher_id">
+    <button onclick="addOrUpdateVoucher()">Lưu Voucher</button>
+  </div>
+
+  <h2>Danh sách Voucher</h2>
+  <div id="voucherList"></div>
+
+  <script>
+    const apiURL = "https://68431f28e1347494c31f29ef.mockapi.io/voucher";
+
+    async function fetchVouchers() {
+      const res = await fetch(apiURL);
+      const data = await res.json();
+      const list = document.getElementById("voucherList");
+      list.innerHTML = "";
+
+      data.forEach(v => {
+        list.innerHTML += `
+          <div class="voucher">
+            <div class="info"><strong>Mã:</strong> ${v.ma_voucher}</div>
+            <div class="info"><strong>Giảm giá:</strong> ${v.giam_gia}%</div>
+            <div class="info"><strong>Hết hạn:</strong> ${v.thoi_gian_het_han}</div>
+            <div class="actions">
+              <button onclick="editVoucher('${v.voucher_id}', '${v.ma_voucher}', '${v.giam_gia}', '${v.thoi_gian_het_han}')">Sửa</button>
+              <button onclick="deleteVoucher('${v.voucher_id}')">Xóa</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    async function addOrUpdateVoucher() {
+      const ma_voucher = document.getElementById("ma_voucher").value;
+      const giam_gia = parseInt(document.getElementById("giam_gia").value);
+      const thoi_gian_het_han = document.getElementById("thoi_gian_het_han").value;
+      const id = document.getElementById("voucher_id").value;
+
+      if (!ma_voucher || !giam_gia || !thoi_gian_het_han) {
+        return alert("Vui lòng nhập đầy đủ thông tin!");
+      }
+
+      const voucher = {
+        ma_voucher,
+        giam_gia,
+        thoi_gian_het_han,
+        khach_hang_id: "" // Mặc định rỗng khi thêm mới
+      };
+
+      if (id === "") {
+        // Thêm mới
+        await fetch(apiURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(voucher)
+        });
+      } else {
+        // Sửa
+        await fetch(`${apiURL}/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(voucher)
+        });
+      }
+
+      // Reset form
+      document.getElementById("ma_voucher").value = "";
+      document.getElementById("giam_gia").value = "";
+      document.getElementById("thoi_gian_het_han").value = "";
+      document.getElementById("voucher_id").value = "";
+
+      fetchVouchers();
+    }
+
+    function editVoucher(id, ma_voucher, giam_gia, thoi_gian_het_han) {
+      document.getElementById("ma_voucher").value = ma_voucher;
+      document.getElementById("giam_gia").value = giam_gia;
+      document.getElementById("thoi_gian_het_han").value = thoi_gian_het_han;
+      document.getElementById("voucher_id").value = id;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function deleteVoucher(id) {
+      if (confirm("Bạn chắc chắn muốn xóa voucher này?")) {
+        await fetch(`${apiURL}/${id}`, {
+          method: "DELETE"
+        });
+        fetchVouchers();
+      }
+    }
+
+    fetchVouchers();
+  </script>
+
+</body>
+</html>
