@@ -122,6 +122,16 @@
   <h2>Danh sách Slide</h2>
   <div id="slideList"></div>
 
+
+  <div class="form-container2">
+  <h3>Thay đổi Banner</h3>
+  <input type="text" id="banner" placeholder="Nhập URL ảnh banner...">
+  <button onclick="saveBanner()">Lưu Banner</button>
+</div>
+
+<img id="bannerImage" src="https://i.pinimg.com/736x/7f/36/50/7f3650d35447bf27721281e2160e063c.jpg" alt="Banner" style="width: 100%; max-width: 500px; margin-top: 20px;">
+  
+
   <script>
     const apiURL = "https://67ac55285853dfff53da3574.mockapi.io/slideShow";
 
@@ -183,7 +193,55 @@
       }
     }
 
-    fetchSlides();
+    const bannerApi = "https://67b5f43207ba6e59083f3354.mockapi.io/banner";
+
+  // Hiển thị banner hiện tại
+  async function fetchBanner() {
+    const res = await fetch(bannerApi);
+    const data = await res.json();
+    if (data.length > 0) {
+      document.getElementById("bannerImage").src = data[0].banner;
+      document.getElementById("banner").value = data[0].banner;
+      document.getElementById("banner").setAttribute("data-id", data[0].id);
+    } else {
+      document.getElementById("bannerImage").src = "";
+      document.getElementById("banner").value = "";
+      document.getElementById("banner").removeAttribute("data-id");
+    }
+  }
+
+  // Xem trước banner khi nhập link
+  document.getElementById("banner").addEventListener("input", function() {
+    document.getElementById("bannerImage").src = this.value;
+  });
+
+  // Lưu hoặc cập nhật banner
+  async function saveBanner() {
+    const url = document.getElementById("banner").value.trim();
+    const id = document.getElementById("banner").getAttribute("data-id");
+    if (!url) return alert("Vui lòng nhập URL ảnh banner!");
+
+    if (id) {
+      // Đã có banner, cập nhật
+      await fetch(`${bannerApi}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ banner: url })
+      });
+    } else {
+      // Chưa có, tạo mới
+      await fetch(bannerApi, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ banner: url })
+      });
+    }
+    fetchBanner();
+    alert("Đã lưu banner!");
+  }
+
+  fetchSlides();
+  fetchBanner();
   </script>
 
   
