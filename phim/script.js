@@ -34,7 +34,7 @@ function renderFilms(films) {
     const card = document.createElement("div");
     card.className = "film-card";
     card.innerHTML = `
-      <img src="${film.poster_url}" alt="${film.ten_phim}">
+      <img src="${film.poster_url}" alt="${film.ten_phim}" style="width:190px;height:320px;object-fit:cover;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
       <h3>${film.ten_phim}</h3>
       <p><b>Thể loại:</b> ${film.the_loai}</p>
       <p><b>Đạo diễn:</b> ${film.dao_dien}</p>
