@@ -1,127 +1,159 @@
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #1e1b38, #2a1f4c);
+  background: linear-gradient(135deg, #18122B 0%, #393053 100%);
   margin: 0;
   padding: 20px;
   color: #f0f0f0;
+  position: relative;
+  min-height: 100vh;
+  /* Hiệu ứng ánh sáng rạp phim */
+  box-shadow: 0 0 120px 40px #ffb30033 inset;
 }
 
 h1, h2 {
-  color: #ffffff;
+  color: #FFD93D;
   margin-bottom: 20px;
+  text-shadow: 0 2px 12px #000, 0 0 8px #FFD93D99;
+  letter-spacing: 2px;
+  font-family: 'Pacifico', cursive, sans-serif;
 }
 
 /* Form nhập phim */
 form#filmForm {
-  background: #2b2248;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  background: #23213a;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 24px #FFD93D33;
   display: grid;
-  gap: 12px;
+  gap: 14px;
   max-width: 600px;
   margin-bottom: 40px;
-  color: white;
+  color: #fff;
+  border: 2px solid #FFD93D;
 }
 
-form input {
+form input, form textarea {
   padding: 10px;
-  font-size: 14px;
+  font-size: 15px;
   border: none;
   border-radius: 8px;
-  background-color: #3a2c5e;
-  color: white;
+  background-color: #393053;
+  color: #FFD93D;
+  box-shadow: 0 1px 4px #0002;
 }
 
-form input::placeholder {
-  color: #aaa;
+form input::placeholder, form textarea::placeholder {
+  color: #FFD93D99;
 }
 
 form button {
-  background-color: #6c63ff;
-  color: white;
+  background: linear-gradient(90deg, #FFD93D 60%, #FF6D28 100%);
+  color: #23213a;
   border: none;
   border-radius: 8px;
   padding: 10px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
+  box-shadow: 0 2px 8px #FFD93D44;
+  letter-spacing: 1px;
 }
 
 form button:hover {
-  background-color: #4e47d6;
+  background: linear-gradient(90deg, #FF6D28 60%, #FFD93D 100%);
+  color: #fff;
 }
 
 /* Danh sách phim */
 #filmList {
   display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 /* Card phim */
 .film-card {
-  background: #2b2248;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  color: white;
-  transition: transform 0.2s ease;
+  background: #23213a;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 8px 32px #FFD93D33, 0 2px 8px #0004;
+  color: #fff;
+  border: 2px solid #FFD93D;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
 
 .film-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 16px 48px #FFD93D66, 0 2px 8px #0006;
 }
 
 .film-card img {
   width: 100%;
-  height: 160px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  border: 2px solid #FFD93D;
+  box-shadow: 0 2px 12px #FFD93D33;
 }
 
 .film-card h3 {
   margin-top: 0;
   margin-bottom: 8px;
-  font-size: 18px;
-  color: #6c63ff;
+  font-size: 20px;
+  color: #FFD93D;
+  font-family: 'Pacifico', cursive, sans-serif;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.film-card h3::before {
+  content: "🎬";
+  font-size: 1.2em;
 }
 
 .film-card p {
   margin: 5px 0;
-  font-size: 14px;
-  color: #ccc;
+  font-size: 15px;
+  color: #FFD93Dcc;
 }
 
 /* Nút trong card */
-.film-card button {
+.film-card .edit-btn, .film-card .delete-btn {
   margin-top: 10px;
   margin-right: 8px;
-  padding: 6px 12px;
-  font-size: 13px;
+  padding: 7px 14px;
+  font-size: 14px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: 0.3s;
+  font-weight: 600;
+  box-shadow: 0 1px 4px #FFD93D33;
 }
 
 .film-card .edit-btn {
-  background-color: #f0ad4e;
-  color: white;
+  background: #FFD93D;
+  color: #23213a;
 }
 
 .film-card .edit-btn:hover {
-  background-color: #d99000;
+  background: #FF6D28;
+  color: #fff;
 }
 
 .film-card .delete-btn {
-  background-color: #d9534f;
-  color: white;
+  background: #FF6D28;
+  color: #fff;
 }
 
 .film-card .delete-btn:hover {
-  background-color: #c9302c;
+  background: #FFD93D;
+  color: #23213a;
 }
 
 /* Background Elements */
@@ -138,8 +170,8 @@ form button:hover {
 .bg-circle {
   position: absolute;
   border-radius: 50%;
-  background: var(--primary-gradient);
-  opacity: 0.1;
+  background: radial-gradient(circle, #FFD93D 0%, #FF6D28 100%);
+  opacity: 0.08;
   animation: float 6s ease-in-out infinite;
 }
 
