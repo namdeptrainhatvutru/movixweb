@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quản lý Tin Tức</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h2 {
+      color: #bb0000;
+      margin-top: 30px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background: #bb0000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .card {
+      background: white;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #eee;
+    }
+    .card-info {
+      flex: 1;
+    }
+    .card-info h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      color: #BB0000;
+    }
+    .card-info p {
+      margin: 0;
+      color: #333;
+      font-size: 14px;
+    }
+    .actions {
+      margin-top: 10px;
+    }
+    .actions button {
+      margin-right: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Thêm / Sửa Tin Tức</h2>
+  <input type="text" id="title" placeholder="Tiêu đề">
+  <textarea id="desc" rows="3" placeholder="Mô tả"></textarea>
+  <input type="text" id="img" placeholder="Link ảnh">
+  <button onclick="submitForm()">Lưu</button>
+
+  <h2>Danh sách Tin Tức</h2>
+  <div id="list"></div>
+
+  <script>
+    const api = 'https://67ac56315853dfff53da3fd1.mockapi.io/Tin_Tuc';
+    let editingId = null;
+
+    async function fetchData() {
+      const res = await fetch(api);
+      const data = await res.json();
+      const list = document.getElementById('list');
+      list.innerHTML = '';
+
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <img src="${item.imgTinTuc}" />
+          <div class="card-info">
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <div class="actions">
+              <button onclick="editItem('${item.id}')">✏️ Sửa</button>
+              <button onclick="deleteItem('${item.id}')">🗑️ Xóa</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function submitForm() {
+      const title = document.getElementById('title').value.trim();
+      const desc = document.getElementById('desc').value.trim();
+      const img = document.getElementById('img').value.trim();
+
+      if (!title || !desc || !img) {
+        alert('Vui lòng điền đầy đủ thông tin');
+        return;
+      }
+
+      const payload = {
+        title,
+        desc,
+        imgTinTuc: img
+      };
+
+      if (editingId) {
+        await fetch(`${api}/${editingId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        editingId = null;
+      } else {
+        await fetch(api, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      resetForm();
+      fetchData();
+    }
+
+    function editItem(id) {
+      fetch(`${api}/${id}`)
+        .then(res => res.json())
+        .then(item => {
+          document.getElementById('title').value = item.title;
+          document.getElementById('desc').value = item.desc;
+          document.getElementById('img').value = item.imgTinTuc;
+          editingId = id;
+        });
+    }
+
+    function resetForm() {
+      document.getElementById('title').value = '';
+      document.getElementById('desc').value = '';
+      document.getElementById('img').value = '';
+    }
+
+    async function deleteItem(id) {
+      if (confirm('Bạn chắc chắn muốn xóa tin này?')) {
+        await fetch(`${api}/${id}`, { method: 'DELETE' });
+        fetchData();
+      }
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>
